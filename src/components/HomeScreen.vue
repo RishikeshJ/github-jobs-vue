@@ -1,14 +1,16 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid header-style">
+        <div class="container" style="height:200px;">
+        <div class="row pt-5 pl-4">
             <header>
-                <div class="col-md-12">
-                    <h4> devjobs </h4>
+                <div class="col-md-4">
+                    <h2> devjobs </h2>
                 </div>
             </header>
         </div>
-            <JobsScreen/>
+        </div>
 
+        <JobsScreen/>
     </div>
 </template>
 
@@ -27,14 +29,14 @@ export default {
 </script>
 
 <style scoped>
-    header {
+    .header-style {
         position: relative;
-        height: 200px;
         width: 100%;
+        height:200px;
         background-image: linear-gradient(#5865E0,#1c2685);
         border-bottom-left-radius: 120px 90px;
     }
-    h4 {
+    h2 {
         color: white;
     }
     

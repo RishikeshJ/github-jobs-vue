@@ -6,25 +6,27 @@
             <form class="form-inline w-100 jobs-input-control  justify-content-center">
                     <div class="form-group mb-2 col-5 px-0">
                         <label for="jobquery" class="sr-only">Filter by title, companies, expertise</label>
-                        <input v-model="description" type="text" class="form-control w-100" id="jobquery" placeholder="Filter by title, companies, expertise...">
+                        <input v-model="description" type="text" class="form-control w-100 px-5" id="jobquery" placeholder="Filter by title, companies, expertise...">
+                        <img src="../assets/magnifying-glass.svg" class="Icon"/>
                     </div>
-                    <div class="form-group mb-2" style="z-index:1;">
+                     <div class="form-group mb-2 col-3 px-0">
                         <label for="locationFilter" class="sr-only">Filter by location</label>
-                        <input v-model="location" type="text" class="form-control" id="locationFilter" placeholder="Filter by location...">
+                        <input v-model="location" type="text" class="form-control px-5" id="locationFilter" placeholder="Filter by location...">
+                        <img src="../assets/map-pin.svg" class="Icon2"/>
                     </div>
                     <div class="form-group mb-2 job-type-filter px-3" style="z-index:1; background-color: white">
                         <label for="typeFilter" class="sr-only">Full Time Only</label>
                         <input v-model="isFullTime" type="checkbox" id="typeFilter" class="mr-3">
-                        <label for="typeFilter" class="mr-3">Full Time Only</label>
+                        <label for="typeFilter" class="mr-3" style="font-weight: bold">Full Time Only</label>
                         <button type="button" @click="getJobs()" class="btn btn-primary">Search</button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="container">
-            <div class="row justify-content-center">
+            <div class="row justify-content-around">
                 <div class="col-md-3 my-4 mx-2 p-3 card" v-for="(value) in jobData.data" :key="value.id" >
-                    <img class="img-card-top" :src="value.company_logo" alt="">
+                    <img class="img-card-top img-responsive" :src="value.company_logo" alt="">
                     <span> 5h ago. {{value.type}} </span>
                     <p> {{value.title}} </p>
                     <p class="pb-4"> {{value.company}} </p> 
@@ -44,6 +46,7 @@ export default {
     },
     created(){
         this.getJobs();
+        this.getCurrentLocation();
     },
     data(){
         return {
@@ -70,6 +73,27 @@ export default {
                 console.log(response);
                 this.jobData = response;
             })
+        },
+        getCurrentLocation(){
+            var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+            };
+
+            function success(pos) {
+            var crd = pos.coords;
+            console.log(pos);
+            console.log('Your current position is:');
+            console.log(`Latitude : ${crd.latitude}`);
+            console.log(`Longitude: ${crd.longitude}`);
+            console.log(`More or less ${crd.accuracy} meters.`);
+            }
+
+            function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+            navigator.geolocation.getCurrentPosition(success, error, options);
         }
     },
 }
@@ -112,4 +136,18 @@ export default {
         border-radius: 0% !important;
     }
 
+    .Icon {
+        position: absolute;
+        left: 0px;
+        padding: 10px 12px;
+        pointer-events: none;
+        width: 10%;
+    }
+    .Icon2 {
+        position: absolute;
+        left: 0px;
+        padding: 10px 12px;
+        pointer-events: none;
+        width: 20%;
+    }
 </style>
