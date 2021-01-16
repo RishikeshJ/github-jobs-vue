@@ -6,17 +6,17 @@
             <form class="form-inline w-100 jobs-input-control  justify-content-center">
                     <div class="form-group mb-2 col-5 px-0">
                         <label for="jobquery" class="sr-only">Filter by title, companies, expertise</label>
-                        <input type="text" class="form-control w-100" id="jobquery" placeholder="Filter by title, companies, expertise...">
+                        <input v-model="description" type="text" class="form-control w-100" id="jobquery" placeholder="Filter by title, companies, expertise...">
                     </div>
                     <div class="form-group mb-2" style="z-index:1;">
                         <label for="locationFilter" class="sr-only">Filter by location</label>
-                        <input type="text" class="form-control" id="locationFilter" placeholder="Filter by location...">
+                        <input v-model="location" type="text" class="form-control" id="locationFilter" placeholder="Filter by location...">
                     </div>
                     <div class="form-group mb-2 job-type-filter px-3" style="z-index:1; background-color: white">
                         <label for="typeFilter" class="sr-only">Full Time Only</label>
-                        <input type="checkbox" id="typeFilter" class="mr-3">
+                        <input v-model="isFullTime" type="checkbox" id="typeFilter" class="mr-3">
                         <label for="typeFilter" class="mr-3">Full Time Only</label>
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="button" @click="getJobs()" class="btn btn-primary">Search</button>
                     </div>
                 </form>
             </div>
@@ -31,10 +31,7 @@
                     <p class="location">{{value.location}}</p>
                 </div>
             </div>
-        </div>
-
-
-        
+        </div>       
     </div>
 </template>
 
@@ -50,13 +47,25 @@ export default {
     },
     data(){
         return {
-            jobData:[]
+            jobData:[],
+            description:'',
+            location:'',
+            isFullTime:false,
+            page:0
         }
     },
     methods:{
         getJobs() {
             let baseUrl = "https://ntl-func.netlify.app/.netlify/functions/jobs"
-            axios.get(baseUrl, {
+            axios.get(baseUrl, 
+            { 
+                params: 
+                    { 
+                        description: this.description, 
+                        location: this.location, 
+                        isFullTime: this.isFullTime,
+                        page: this.page 
+                    }
             }).then(response=>{
                 console.log(response);
                 this.jobData = response;
