@@ -20,7 +20,7 @@
       <div class="col-md-10">
         <div class="row job-details-card">
           <div class="col-md-12 p-5">
-            <p>1w ago . {{ jobDetails.type }}</p>
+            <p> {{getRelativeTime(jobDetails.created_at)}} • {{ jobDetails.type }}</p>
             <h3>{{ jobDetails.title }}</h3>
             <p>{{ jobDetails.location }}</p>
             <div v-html="jobDetails.description"></div>
@@ -45,7 +45,8 @@
 
 <script>
 import axios from "axios";
-
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
 export default {
   created() {
     console.log("job details");
@@ -64,6 +65,10 @@ export default {
           this.jobDetails = response.data;
         });
     },
+    getRelativeTime(time){
+        dayjs.extend(relativeTime);
+        return dayjs().to(dayjs(time));
+    }
   },
   data() {
     return {
