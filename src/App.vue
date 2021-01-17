@@ -1,26 +1,32 @@
 <template>
-  <div id="app">
-    <HomeScreen/>
-  </div>
+     <div id="app" class="container-fluid header-style">
+        <div class="container" style="height:200px;">
+        <div class="row pt-5 pl-4">
+            <header>
+                <div class="col-md-4">
+                    <h2> devjobs </h2>
+                </div>
+            </header>
+        </div>
+        </div>
+        <router-view/>
+    </div>
 </template>
 
 <script>
-import HomeScreen from './components/HomeScreen.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HomeScreen
-  }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-
+.header-style {
+    position: relative;
+    width: 100%;
+    height:200px;
+    background-image: linear-gradient(#5865E0,#1c2685);
+    border-bottom-left-radius: 120px 90px;
+}
+h2 {
+    color: white;
 }
 </style>

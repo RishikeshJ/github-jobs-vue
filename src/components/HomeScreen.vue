@@ -1,15 +1,5 @@
 <template>
-    <div class="container-fluid header-style">
-        <div class="container" style="height:200px;">
-        <div class="row pt-5 pl-4">
-            <header>
-                <div class="col-md-4">
-                    <h2> devjobs </h2>
-                </div>
-            </header>
-        </div>
-        </div>
-
+    <div class="container">
         <JobsScreen/>
     </div>
 </template>

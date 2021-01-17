@@ -2,8 +2,7 @@
     <div>
         <div class="container px-0 mb-4" >
             <div class="row" style="height: 60px;margin-top: -30px;">
-                
-            <form class="form-inline w-100 jobs-input-control  justify-content-center">
+            <form class="form-inline w-100 jobs-input-control justify-content-center">
                     <div class="form-group mb-2 col-5 px-0">
                         <label for="jobquery" class="sr-only">Filter by title, companies, expertise</label>
                         <input v-model="description" type="text" class="form-control w-100 px-5" id="jobquery" placeholder="Filter by title, companies, expertise...">
@@ -25,7 +24,7 @@
         </div>
         <div class="container">
             <div class="row justify-content-around">
-                <div class="col-md-3 my-4 mx-2 p-3 card" v-for="(value) in jobData.data" :key="value.id" >
+                <div class="col-md-3 my-4 mx-2 p-3 card" v-for="(value) in jobData.data" :key="value.id" @click="onGetDetails(value.id)" >
                     <img class="img-card-top img-responsive" :src="value.company_logo" alt="">
                     <span> 5h ago. {{value.type}} </span>
                     <p> {{value.title}} </p>
@@ -94,6 +93,9 @@ export default {
             console.warn(`ERROR(${err.code}): ${err.message}`);
             }
             navigator.geolocation.getCurrentPosition(success, error, options);
+        },
+        onGetDetails(id){
+            this.$router.push({path: '/job-details', query: { id: id }})
         }
     },
 }
@@ -103,6 +105,7 @@ export default {
     .card{
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         width: 100%;
+        cursor: pointer;
     }
     .location{
         color: blue;
