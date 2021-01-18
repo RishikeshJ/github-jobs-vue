@@ -12,31 +12,33 @@
         >
           <div class="form-group mb-2 col-lg-5 col-12 px-0 form-control w-100">
             <div class="row w-100 mx-0">
-              <div class="col-3 px-0 pt-1 d-lg-flex d-none">
+              <div class="col-1 px-0 pt-1 d-lg-flex d-none">
                 <img
                   src="../assets/magnifying-glass.svg"
-                  class="d-md-flex d-none ml-3"
+                  class="d-md-flex d-none ml-2"
                   style="height: 35px; width: 30px"
                 />
               </div>
-              <div class="col-lg-9 px-lg-0 d-flex col-12">
+              <div class="col-lg-11 px-lg-0 d-flex col-12">
                 <label for="jobquery" class="sr-only"
                   >Filter by title, companies, expertise</label
                 >
                 <input
                   v-model="description"
                   type="text"
-                  class="w-100 px-lg-5"
+                  class="w-100 px-lg-5 no-padding"
                   style="border: 0"
                   id="jobquery"
                   placeholder="Filter by title, companies, expertise..."
                 />
                 <button
                   class="btn-sm btn-outline-primary d-lg-none float-right"
-                  type="button" ref='search' id="search"
+                  type="button"
+                  ref="search"
+                  id="search"
                   @click="onSearch()"
                 >
-                Search
+                  Search
                   <!-- <img
                     src="../assets/magnifying-glass.svg"
                     style="height: 10px; width: 10px; color: white;"
@@ -71,10 +73,19 @@
               class="mr-3"
               :disabled="validateParams"
             />
-            <label for="typeFilter" class="mr-3 label-text" style="font-weight: bold"
+            <label
+              for="typeFilter"
+              class="mr-3 label-text"
+              style="font-weight: bold"
               >Full Time Only</label
             >
-            <button type="button" ref='search' id="search" @click="onSearch()" class="btn btn-primary">
+            <button
+              type="button"
+              ref="search"
+              id="search"
+              @click="onSearch()"
+              class="btn btn-primary"
+            >
               Search
             </button>
           </div>
@@ -98,13 +109,17 @@
         >
           <img
             class="img-card-top img-thumbnail"
-            :src="value.company_logo"
+            :src="
+              value.company_logo
+                ? value.company_logo
+                : require('../assets/envelope.png')
+            "
             alt=""
           />
           <span class="pb-3">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
-          <p style="font-weight:bold" class="card-title">{{ value.title }}</p>
+          <p style="font-weight: bold" class="card-title">{{ value.title }}</p>
           <p class="pb-4">{{ value.company }}</p>
           <p class="location">{{ value.location }}</p>
         </div>
@@ -139,7 +154,7 @@ export default {
   name: "JobsScreen",
   props: {},
   created() {
-    this.getCurrentLocation()
+    this.getCurrentLocation();
   },
   data() {
     return {
@@ -156,15 +171,12 @@ export default {
   },
   computed: {
     validateParams() {
-      console.log('description.length is: ', this.description.length)
-      console.log('location.length is: ', this.location.length)
+      console.log("description.length is: ", this.description.length);
+      console.log("location.length is: ", this.location.length);
 
-      if(this.description.length > 0 || this.location.length > 0)
-      return false
-      else
-      return true 
-      
-    }
+      if (this.description.length > 0 || this.location.length > 0) return false;
+      else return true;
+    },
   },
   methods: {
     getJobs() {
@@ -178,7 +190,7 @@ export default {
             isFullTime: this.isFullTime,
             page: this.page,
             lat: this.lat,
-            long: this.long
+            long: this.long,
           },
         })
         .then((response) => {
@@ -203,25 +215,25 @@ export default {
     },
     getCurrentLocation() {
       this.isLoading = true;
-        if (navigator.geolocation) {
-          let that = this
-          navigator.geolocation.getCurrentPosition(
-            function (position) {
-              var lat = position.coords.latitude;
-              var lng = position.coords.longitude;
-              that.lat = lat
-              that.long = lng
-              that.getJobs()
-            },
-            function (error) {
-              if(error) {
-              that.getJobs()
-              }
+      if (navigator.geolocation) {
+        let that = this;
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            that.lat = lat;
+            that.long = lng;
+            that.getJobs();
+          },
+          function (error) {
+            if (error) {
+              that.getJobs();
             }
-          );
-        } else {
-          this.getJobs()
-        }
+          }
+        );
+      } else {
+        this.getJobs();
+      }
     },
     onGetDetails(id) {
       this.$router.push({ path: "/job-details", query: { id: id } });
@@ -254,7 +266,7 @@ export default {
   color: white;
 }
 .location {
-  color: #5865E0;
+  color: #5865e0;
   position: absolute;
   bottom: 5px;
   margin-bottom: 0px;
@@ -298,6 +310,4 @@ export default {
   pointer-events: none;
   width: 20%;
 }
-
-
 </style>

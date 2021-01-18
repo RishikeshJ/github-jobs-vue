@@ -4,7 +4,7 @@
       <div class="col-md-10">
         <div class="row job-title-card p-3">
           <div class="col-md-3">
-            <img class="image-size" :src="jobDetails.company_logo" alt="" />
+            <img class="image-size img-thumbnail" :src="jobDetails.company_logo ? jobDetails.company_logo : require('../assets/envelope.png')" />
           </div>
           <div class="col-md-6 my-auto">
             <h3>{{ jobDetails.company }}</h3>
