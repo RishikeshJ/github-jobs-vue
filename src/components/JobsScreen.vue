@@ -8,18 +8,18 @@
     <div class="container px-0 mb-4" v-if="!isLoading">
       <div class="row" style="height: 60px; margin-top: -30px">
         <form
-          class="form-inline w-100 jobs-input-control justify-content-center"
+          class="form-inline w-100 jobs-input-control justify-content-md-center"
         >
-          <div class="form-group mb-2 col-md-5 col-10 px-0 form-control">
-            <div class="row w-100">
-              <div class="col-3 px-0 pt-1">
+          <div class="form-group mb-2 col-md-5 col-12 px-0 form-control w-100">
+            <div class="row w-100 mx-0">
+              <div class="col-3 px-0 pt-1 d-md-flex d-none">
                 <img
                   src="../assets/magnifying-glass.svg"
                   class="d-md-flex d-none ml-3"
                   style="height: 35px; width: 30px"
                 />
               </div>
-              <div class="col-9 px-0">
+              <div class="col-md-9 px-md-0 d-flex col-12">
                 <label for="jobquery" class="sr-only"
                   >Filter by title, companies, expertise</label
                 >
@@ -33,6 +33,7 @@
                 />
                 <button
                   class="btn btn-primary d-md-none float-right"
+                  type="button" ref='search' id="search"
                   @click="onSearch()"
                 >
                   <img
