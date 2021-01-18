@@ -10,18 +10,21 @@
     <div class="container px-0 mb-4">
       <div class="row" style="max-height: 60px; margin-top: -30px">
         <form
-          class="form-inline w-100 jobs-input-control justify-content-lg-center">
+          class="form-inline w-100 jobs-input-control justify-content-lg-center"
+        >
           <div class="form-group mb-2 col-lg-5 col-12 px-0 form-control w-100">
             <div class="row w-100 mx-0">
               <div class="col-1 px-0 pt-1 d-lg-flex d-none">
                 <img
                   src="../assets/magnifying-glass.svg"
                   class="d-md-flex d-none ml-2"
-                  style="height: 35px; width: 30px"/>
+                  style="width: 30px"
+                />
               </div>
               <div class="col-lg-11 px-lg-0 d-flex col-12">
                 <label for="jobquery" class="sr-only">
-                  Filter by title, companies, expertise</label>
+                  Filter by title, companies, expertise</label
+                >
                 <input
                   v-model="description"
                   type="text"
@@ -29,62 +32,83 @@
                   class="w-100 px-lg-5 no-padding"
                   style="border: 0"
                   id="jobquery"
-                  placeholder="Filter by title, companies, expertise..."/>
+                  placeholder="Filter by title, companies, expertise..."
+                  :change="validateParams"
+                />
                 <button
                   class="btn-sm btn-outline-primary d-lg-none float-right"
                   type="button"
                   ref="search"
-                  id="search"
+                  id="searchResponsive"
                   @click="onSearch()"
-                  :disabled="validatorError">
+                  :disabled="validatorError"
+                >
                   Search
                 </button>
               </div>
             </div>
           </div>
           <div class="form-control mb-2 col-3 px-0 d-lg-block d-none">
-            <label for="locationFilter" class="sr-only">
-              Filter by location</label>
-            <input
-              v-model="location"
-              style="border: 0px"
-              type="text"
-              class="px-5"
-              id="locationFilter"
-              placeholder="Filter by location..."
-            />
-            <img src="../assets/map-pin.svg" class="icon-2" />
+            <div class="row no-gutters">
+              <div class="col-2">
+                <img src="../assets/map-pin.svg" class="icon-2 ml-2" />
+              </div>
+              <div class="col-10">
+                <label for="locationFilter" class="sr-only">
+                  Filter by location</label
+                >
+                <input
+                  v-model="location"
+                  style="border: 0px"
+                  type="text"
+                  class="px-2"
+                  id="locationFilter"
+                  placeholder="Filter by location..."
+                  :change="validateParams"
+                />
+              </div>
+            </div>
           </div>
           <div
             class="form-group mb-2 job-type-filter d-lg-flex d-none px-3"
-            style="z-index: 1">
+            style="z-index: 1"
+          >
             <label for="typeFilter" id="checkbox-fulltime" class="sr-only">
-              Full Time Only</label>
+              Full Time Only</label
+            >
             <input
               v-model="isFullTime"
               type="checkbox"
               id="typeFilter"
               class="mr-3"
-              :disabled="validateParams"/>
+              data-toggle="tooltip"
+              data-placement="top"
+            />
             <label
               for="typeFilter"
               class="mr-3 label-text"
               style="font-weight: bold"
-              >Full Time Only</label>
+              data-toggle="tooltip"
+              data-placement="top"
+              >Full Time Only</label
+            >
             <button
               type="button"
               ref="search"
               id="search"
               @click="onSearch()"
               class="btn btn-primary"
-              :disabled="validatorError">
+              :disabled="validatorError"
+            >
               Search
             </button>
           </div>
         </form>
         <!-- validation message with v if condition on validateError variable - checks if string has any numeric or special chars -->
         <div class="container" v-if="this.validatorError">
-          <p class="ml-5" id="validation-msg" style="font-style: italic;">* Cannot allow special characters in the input</p>
+          <p class="ml-5" id="validation-msg" style="font-style: italic">
+            * Cannot allow special characters in the input
+          </p>
         </div>
       </div>
     </div>
@@ -94,19 +118,24 @@
         :class="
           jobData.data && jobData.data.length < 3
             ? 'justify-content-start pl-3 ml-2'
-            : 'justify-content-around'">
+            : 'justify-content-around'
+        "
+      >
         <div
           class="col-md-3 my-4 mx-2 p-3 card"
           v-for="(value, index) in jobData.data"
           :key="index"
-          @click="onGetDetails(value.id)">
+          @click="onGetDetails(value.id)"
+        >
           <img
             class="img-card-top img-thumbnail"
             :src="
               value.company_logo
                 ? value.company_logo
-                : require('../assets/envelope.png')"
-            alt=""/>
+                : require('../assets/envelope.png')
+            "
+            alt=""
+          />
           <span class="pb-3" id="type-test">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
@@ -115,9 +144,14 @@
           <p class="location">{{ value.location }}</p>
         </div>
         <div
-          v-if="jobData.data && jobData.data.length % 50 === 0"
+          v-if="
+            jobData.data &&
+            jobData.data.length % 50 === 0 &&
+            jobData.data.length > 49
+          "
           @click="onLoadMore()"
-          class="col-md-3 my-4 mx-2 p-3 card load-more-card">
+          class="col-md-3 my-4 mx-2 p-3 card load-more-card"
+        >
           <div style="padding: 26%">
             Load More
             <span
@@ -131,10 +165,14 @@
         </div>
       </div>
     </div>
+    <div class="container px-5 no-jobs-card" v-if="jobData.data && jobData.data.length === 0">
+      No jobs that match the search criteria exist, please refine your search and try again.
+    </div>
   </div>
 </template>
 
 <script>
+import "bootstrap/dist/css/bootstrap.min.css";
 /* eslint-disable */
 import axios from "axios";
 import dayjs from "dayjs";
@@ -146,34 +184,54 @@ export default {
   created() {
     this.getCurrentLocation();
   },
+  watch: {
+    isFullTime(val) {
+      if (val) {
+        let filteredJobData = [];
+        filteredJobData.data = [];
+
+        if (this.jobData.data && this.jobData.data.length > 0) {
+          this.jobData.data.forEach((job) => {
+            if (job.type === "Full Time") {
+              filteredJobData.data.push(job);
+            }
+          });
+          this.jobData.data = { ...filteredJobData.data };
+        } else {
+          this.getJobs();
+        }
+      } else {
+        this.getJobs();
+      }
+    },
+  },
   data() {
     return {
       jobData: [],
       description: "",
       location: "",
-      isFullTime: true,
+      isFullTime: false,
       page: 0,
       isLoading: false,
       loadMoreData: false,
       lat: "",
       long: "",
-      validatorError:false,
+      validatorError: false,
     };
   },
   computed: {
     // validateParams() : this method allows us to restrict the user from entering numeric or special characters in the input controls
     validateParams() {
       var hasSpecialChar = /[^A-Za-z0-9]/;
-      
-      if(hasSpecialChar.test(this.description) || hasSpecialChar.test(this.location)){
+
+      if (
+        hasSpecialChar.test(this.description) ||
+        hasSpecialChar.test(this.location)
+      ) {
         this.validatorError = true;
       } else {
         this.validatorError = false;
       }
-        console.log(this.validatorError);
-
-      if (this.description.length > 0 || this.location.length > 0) {return false;}
-      else {return true;}
     },
   },
   methods: {
@@ -198,11 +256,9 @@ export default {
             this.jobData.data.length > 0 &&
             this.loadMoreData
           ) {
-            console.log("length of jobData waS: ", this.jobData.data.length);
             response.data.forEach((data) => {
               this.jobData.data.push(data);
             });
-            console.log("length of jobData is now: ", this.jobData.data.length);
           } else {
             this.jobData = response;
           }
@@ -301,7 +357,8 @@ export default {
   border-radius: 0% !important;
 }
 
-#locationFilter:focus, #jobquery:focus {
+#locationFilter:focus,
+#jobquery:focus {
   border: 0px !important;
   outline: none !important;
 }
@@ -314,10 +371,8 @@ export default {
   width: 10%;
 }
 .icon-2 {
-  position: absolute;
-  left: 0px;
-  padding: 10px 12px;
-  pointer-events: none;
-  width: 20%;
+  width: 30px;
 }
+
+
 </style>
