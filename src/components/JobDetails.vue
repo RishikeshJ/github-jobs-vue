@@ -1,5 +1,12 @@
 <template>
-  <div class="container">
+<div>
+ <!-- v if implementation for the loading spinner - dependency on the isLoading variable -->
+    <div class="d-flex justify-content-center" v-if="isLoading">
+      <div class="spinner-border spinner-pos" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+<div class="container" v-else>
     <!-- job title section -->
     <div class="row justify-content-center mb-5">
       <div class="col-md-10">
@@ -43,6 +50,7 @@
         </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -57,6 +65,7 @@ export default {
   methods: {
     // getJobDetails(id) : this method gets specific job details with respect to its id, this method talks to the backend api
     getJobDetails(id) {
+      this.isLoading = true
       let baseUrl = "https://ntl-func.netlify.app/.netlify/functions/jobs";
       axios
         .get(baseUrl, {
@@ -66,6 +75,8 @@ export default {
         })
         .then((response) => {
           this.jobDetails = response.data;
+        }).finally(() => {
+          this.isLoading = false
         });
     },
     // getRelativeTime(time) : allows us to measure the time elapsed since the created-date
@@ -77,6 +88,7 @@ export default {
   data() {
     return {
       jobDetails: [],
+      isLoading: false
     };
   },
 };

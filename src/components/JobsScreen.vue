@@ -84,7 +84,7 @@
         </form>
         <!-- validation message with v if condition on validateError variable - checks if string has any numeric or special chars -->
         <div class="container" v-if="this.validatorError">
-          <p class="ml-5" id="validation-msg" style="font-style: italic;"> * Cannot allow numeric entries in the query </p>
+          <p class="ml-5" id="validation-msg" style="font-style: italic;">* Cannot allow special characters in the input</p>
         </div>
       </div>
     </div>
@@ -163,9 +163,9 @@ export default {
   computed: {
     // validateParams() : this method allows us to restrict the user from entering numeric or special characters in the input controls
     validateParams() {
-      var hasNumber = /\d/;
+      var hasSpecialChar = /[^A-Za-z0-9]/;
       
-      if(hasNumber.test(this.description) || hasNumber.test(this.location)){
+      if(hasSpecialChar.test(this.description) || hasSpecialChar.test(this.location)){
         this.validatorError = true;
       } else {
         this.validatorError = false;
@@ -300,14 +300,12 @@ export default {
   box-shadow: 0px 2px 10px -5px;
   border-radius: 0% !important;
 }
-.spinner-pos{
-   position: fixed;
-  left: 45vw;
-  top: 50vh;
-  z-index: 1000;
-  height: 80px;
-  width: 80px;
+
+#locationFilter:focus, #jobquery:focus {
+  border: 0px !important;
+  outline: none !important;
 }
+
 .icon {
   position: absolute;
   left: 0px;

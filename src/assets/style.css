@@ -131,3 +131,13 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* style for loading spinner */
+.spinner-pos{
+  position: fixed;
+ left: 45vw;
+ top: 50vh;
+ z-index: 1000;
+ height: 80px;
+ width: 80px;
+}
