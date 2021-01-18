@@ -34,6 +34,7 @@
                   id="jobquery"
                   placeholder="Filter by title, companies, expertise..."
                   :change="validateParams"
+                  maxlength="31"
                 />
                 <button
                   class="btn-sm btn-outline-primary d-lg-none float-right"
@@ -65,6 +66,7 @@
                   id="locationFilter"
                   placeholder="Filter by location..."
                   :change="validateParams"
+                  maxlength="31"
                 />
               </div>
             </div>
@@ -107,7 +109,7 @@
         <!-- validation message with v if condition on validateError variable - checks if string has any numeric or special chars -->
         <div class="container" v-if="this.validatorError">
           <p class="ml-5" id="validation-msg" style="font-style: italic">
-            * Cannot allow special characters in the input
+            * Text should be less than 30 characters and must not contain special characters
           </p>
         </div>
       </div>
@@ -125,6 +127,7 @@
           class="col-md-3 my-4 mx-2 p-3 card"
           v-for="(value, index) in jobData.data"
           :key="index"
+          id="type-test"
           @click="onGetDetails(value.id)"
         >
           <img
@@ -136,7 +139,7 @@
             "
             alt=""
           />
-          <span class="pb-3" id="type-test">
+          <span class="pb-3" >
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
           <p style="font-weight: bold" class="card-title">{{ value.title }}</p>
@@ -224,10 +227,10 @@ export default {
     validateParams() {
       var hasSpecialChar = /[^A-Za-z0-9]/;
 
-      if (
-        hasSpecialChar.test(this.description) ||
-        hasSpecialChar.test(this.location)
-      ) {
+      if (hasSpecialChar.test(this.description) 
+      || hasSpecialChar.test(this.location) 
+      || this.description.length > 30 
+      || this.location.length > 30) {
         this.validatorError = true;
       } else {
         this.validatorError = false;

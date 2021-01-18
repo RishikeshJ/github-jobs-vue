@@ -1,7 +1,7 @@
 <template>
 <div>
  <!-- v if implementation for the loading spinner - dependency on the isLoading variable -->
-    <div class="d-flex justify-content-center" v-if="isLoading">
+    <div class="d-flex justify-content-center detail-spinner" v-if="isLoading">
       <div class="spinner-border spinner-pos" role="status">
         <span class="sr-only">Loading...</span>
       </div>
