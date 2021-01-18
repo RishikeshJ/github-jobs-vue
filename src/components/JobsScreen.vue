@@ -61,7 +61,7 @@
           </div>
           <div
             class="form-group mb-2 job-type-filter d-lg-flex d-none px-3"
-            style="z-index: 1; background-color: white"
+            style="z-index: 1"
           >
             <label for="typeFilter" class="sr-only">Full Time Only</label>
             <input
@@ -69,8 +69,9 @@
               type="checkbox"
               id="typeFilter"
               class="mr-3"
+              :disabled="validateParams"
             />
-            <label for="typeFilter" class="mr-3" style="font-weight: bold"
+            <label for="typeFilter" class="mr-3 label-text" style="font-weight: bold"
               >Full Time Only</label
             >
             <button type="button" ref='search' id="search" @click="onSearch()" class="btn btn-primary">
@@ -103,7 +104,7 @@
           <span class="pb-3">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
-          <p style="font-weight:bold ">{{ value.title }}</p>
+          <p style="font-weight:bold" class="card-title">{{ value.title }}</p>
           <p class="pb-4">{{ value.company }}</p>
           <p class="location">{{ value.location }}</p>
         </div>
@@ -145,13 +146,25 @@ export default {
       jobData: [],
       description: "",
       location: "",
-      isFullTime: false,
+      isFullTime: true,
       page: 0,
       isLoading: false,
       loadMoreData: false,
       lat: "",
       long: "",
     };
+  },
+  computed: {
+    validateParams() {
+      console.log('description.length is: ', this.description.length)
+      console.log('location.length is: ', this.location.length)
+
+      if(this.description.length > 0 || this.location.length > 0)
+      return false
+      else
+      return true 
+      
+    }
   },
   methods: {
     getJobs() {
@@ -241,7 +254,7 @@ export default {
   color: white;
 }
 .location {
-  color: blue;
+  color: #5865E0;
   position: absolute;
   bottom: 5px;
   margin-bottom: 0px;
@@ -255,12 +268,10 @@ export default {
   margin-left: -40%;
 }
 .job-type-filter {
-  border: 1px solid black;
   padding: 0px;
   height: calc(1.5em + 0.75rem + 2px);
   box-shadow: 0px 2px 10px -5px;
   border-top: 0px !important;
-  border-bottom: 0px !important;
   border-color: rgb(206, 212, 218);
 }
 .jobs-input-control >>> *:not(.btn) {
@@ -268,7 +279,7 @@ export default {
 }
 .form-control {
   border-top: 0px !important;
-  border-bottom: 0px !important;
+  /* border-bottom: 0px !important; */
   box-shadow: 0px 2px 10px -5px;
   border-radius: 0% !important;
 }
@@ -287,4 +298,6 @@ export default {
   pointer-events: none;
   width: 20%;
 }
+
+
 </style>

@@ -1,67 +1,57 @@
 <template>
-     <div id="app" class="container-fluid header-style" :class="(mode === true) ? 'dark' : 'light'">
-        <div class="container" style="height:200px;">
-        <!-- <button @click="switchMode(mode)">switch</button> -->
+  <div id="app" class="container-fluid header-style">
+    <div class="container" style="height: 200px">
+      <header>
         <div class="row pt-5 pl-4">
-            <header>
-                <div class="col-md-4">
-                    <h2> devjobs </h2>
-                </div>
-            </header>
+          <div class="col-md-auto col-12 mr-auto">
+            <h2 style="cursor:pointer" @click="navigateToHome()">devjobs</h2>
+          </div>
+          <div class="col-md-auto col-12 mt-md-0 mt-2">
+            <div class="float-end">
+              <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox"
+                    v-model="enableDarkMode"
+                    :change="toggleDarkMode()"
+                  />
+                  <div class="slider round"></div>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-        <router-view/>
+      </header>
     </div>
+    <router-view />
+  </div>
 </template>
 
 <script>
-import '../src/assets/css/light.css'
-// import '../src/assets/css/dark.css'
-
 export default {
-    data(){
-        return{
-            mode : true
-        }
+  data() {
+    return {
+      enableDarkMode: false,
+    };
+  },
+  methods: {
+    navigateToHome() {
+      this.$router.push('/');
     },
-    methods:{
-        switchMode(currentMode){
-            this.mode = !currentMode;
-            console.log(this.mode)
-            var element = document.createElement("link");
-            if(this.mode){
-                console.log(document.getElementsByTagName("link"))
-                console.log(element);
-                element.setAttribute("rel", "stylesheet");
-                element.setAttribute("type", "text/css");
-                element.setAttribute("href", "../src/assets/css/light.css");
-                element.setAttribute("id",'light');
-                document.getElementsByTagName("head")[0].appendChild(element);
-            } else {
-                console.log(element);
-                element.setAttribute("rel", "stylesheet");
-                element.setAttribute("type", "text/css");
-                element.setAttribute("href", "../src/assets/css/dark.css");
-                element.setAttribute("id",'dark');
-                document.getElementsByTagName("head")[0].appendChild(element);
-
-
-                let allStyles = document.getElementsByTagName("link")
-                    allStyles.forEach(style=> {
-                    console.log(style.href)
-                })
-            }
-        },
-    }
-}
+    toggleDarkMode() {
+      if (this.enableDarkMode) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    },
+  },
+};
 </script>
 
 <style >
-
 h2 {
-    color: white;
+  color: white;
 }
-
-
-
 </style>

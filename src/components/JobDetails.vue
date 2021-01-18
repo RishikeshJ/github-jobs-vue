@@ -19,7 +19,7 @@
     <div class="row justify-content-center mt-5">
       <div class="col-md-10">
         <div class="row job-details-card">
-          <div class="col-md-12 p-5">
+          <div class="col-md-12 p-5 rendered-html-style">
             <p> {{getRelativeTime(jobDetails.created_at)}} • {{ jobDetails.type }}</p>
             <h3>{{ jobDetails.title }}</h3>
             <p>{{ jobDetails.location }}</p>
@@ -85,11 +85,9 @@ export default {
 .job-title-card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin-top: -60px;
-    background: white;
 }
 .job-details-card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    background: white;
 }
 .how-to-apply-card {
     background-image: linear-gradient(#5865E0,#1c2685);
@@ -99,5 +97,6 @@ export default {
     color: white;
     text-decoration: underline;
 }
+
 
 </style>
