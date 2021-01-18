@@ -33,7 +33,7 @@
         <div class="col-md-10">
             <div class="row how-to-apply-card mb-5">
                 <div class="col-md-12 p-5">
-                    <h3> How to Apply </h3>
+                    <h3 id="test-apply-section"> How to Apply </h3>
                     <div style="overflow-wrap:break-word;" class="how-to-apply-url" v-html="jobDetails.how_to_apply">
                     </div>
                 </div>

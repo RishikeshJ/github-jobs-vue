@@ -23,6 +23,7 @@
                 <input
                   v-model="description"
                   type="text"
+                  name="jobquery"
                   class="w-100 px-lg-5 no-padding"
                   style="border: 0"
                   id="jobquery"
@@ -32,7 +33,8 @@
                   type="button"
                   ref="search"
                   id="search"
-                  @click="onSearch()">
+                  @click="onSearch()"
+                  :disabled="validatorError">
                   Search
                 </button>
               </div>
@@ -76,14 +78,18 @@
               id="search"
               @click="onSearch()"
               class="btn btn-primary"
+              :disabled="validatorError"
             >
               Search
             </button>
           </div>
         </form>
+        <div class="container" v-if="this.validatorError">
+          <p class="ml-5" id="validation-msg" style="font-style: italic;"> * Only queries with alphabets are allowed </p>
+        </div>
       </div>
     </div>
-    <div class="container" v-if="!isLoading">
+    <div class="container pt-4" v-if="!isLoading">
       <div
         class="row"
         :class="
@@ -158,15 +164,22 @@ export default {
       loadMoreData: false,
       lat: "",
       long: "",
+      validatorError:false,
     };
   },
   computed: {
     validateParams() {
-      console.log("description.length is: ", this.description.length);
-      console.log("location.length is: ", this.location.length);
+      var hasNumber = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g;
+      if(hasNumber.test(this.description) || hasNumber.test(this.location)){
+        console.log(this.validatorError);
+        this.validatorError = true;
+      } else {
+        this.validatorError = false;
+      }
+      if (this.description.length > 0 || this.location.length > 0) {return false;}
+      else {return true;}
 
-      if (this.description.length > 0 || this.location.length > 0) return false;
-      else return true;
+
     },
   },
   methods: {
