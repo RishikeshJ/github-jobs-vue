@@ -4,6 +4,7 @@ import App from '../../src/App.vue'
 import JobDetails from '../../src/components/JobDetails.vue'
 import VueRouter from "vue-router"
 import routes from "../../src/router/index"
+import axios from 'axios'
 
 describe('JobsScreen.vue', () => {
   it('renders renders loading spinner', () => {
@@ -17,6 +18,20 @@ describe('JobsScreen.vue', () => {
     const wrapper = shallowMount(App);
     expect(wrapper.text()).toMatch(msg)
   })
+
+  it('API endpoint is working', async ()=>{
+    let baseUrl = "https://ntl-func.netlify.app/.netlify/functions/jobs";
+    axios.get(baseUrl, {
+      params:{
+        description:'software',
+        location:''
+      },
+    }).then((response)=>{
+      expect(response).toHaveLength(50)
+    }).catch((error)=>{
+    })
+  }
+  )
 
   // it("renders a child component via routing",  () => {
   //   const router = new VueRouter( routes )

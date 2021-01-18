@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="d-flex justify-content-center" v-if="isLoading">
-      <div class="spinner-border" role="status">
+      <div class="spinner-border spinner-pos" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div class="container px-0 mb-4" v-if="!isLoading">
+    <div class="container px-0 mb-4">
       <div class="row" style="max-height: 60px; margin-top: -30px">
         <form
           class="form-inline w-100 jobs-input-control justify-content-lg-center">
@@ -56,7 +56,7 @@
             class="form-group mb-2 job-type-filter d-lg-flex d-none px-3"
             style="z-index: 1"
           >
-            <label for="typeFilter" class="sr-only">Full Time Only</label>
+            <label for="typeFilter" id="checkbox-fulltime" class="sr-only">Full Time Only</label>
             <input
               v-model="isFullTime"
               type="checkbox"
@@ -107,7 +107,7 @@
             "
             alt=""
           />
-          <span class="pb-3">
+          <span class="pb-3" id="type-test">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
           <p style="font-weight: bold" class="card-title">{{ value.title }}</p>
@@ -143,7 +143,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 export default {
   name: "JobsScreen",
-  props: {},
+  props: [],
   created() {
     this.getCurrentLocation();
   },
@@ -208,6 +208,7 @@ export default {
       this.isLoading = true;
       if (navigator.geolocation) {
         let that = this;
+        that.getJobs();
         navigator.geolocation.getCurrentPosition(
           function (position) {
             var lat = position.coords.latitude;
@@ -286,7 +287,14 @@ export default {
   box-shadow: 0px 2px 10px -5px;
   border-radius: 0% !important;
 }
-
+.spinner-pos{
+   position: fixed;
+  left: 45vw;
+  top: 50vh;
+  z-index: 1000;
+  height: 80px;
+  width: 80px;
+}
 .icon {
   position: absolute;
   left: 0px;
