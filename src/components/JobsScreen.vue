@@ -35,6 +35,7 @@
                   placeholder="Filter by title, companies, expertise..."
                   :change="validateParams"
                   maxlength="31"
+                  v-on:keyup.enter="getJobs()"
                 />
                 <button
                   class="btn-sm btn-outline-primary d-lg-none float-right"
@@ -67,6 +68,7 @@
                   placeholder="Filter by location..."
                   :change="validateParams"
                   maxlength="31"
+                  v-on:keyup.enter="getJobs()"
                 />
               </div>
             </div>
@@ -168,14 +170,13 @@
         </div>
       </div>
     </div>
-    <div class="container px-5 no-jobs-card" v-if="jobData.data && jobData.data.length === 0">
+    <div class="container px-5 no-jobs-card" v-if="(jobData.data && jobData.data.length === 0) || (jobData.data && Object.keys(jobData.data).length === 0)">
       No jobs that match the search criteria exist, please refine your search and try again.
     </div>
   </div>
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.min.css";
 /* eslint-disable */
 import axios from "axios";
 import dayjs from "dayjs";
