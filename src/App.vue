@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container-fluid header-style">
     <div class="container" style="height: 200px">
+      <!-- section for the devjobs title, darkmode toggle -->
       <header>
         <div class="row pt-5 pl-4">
           <div class="col-md-auto col-12 mr-auto">
@@ -14,8 +15,7 @@
                     type="checkbox"
                     id="checkbox"
                     v-model="enableDarkMode"
-                    :change="toggleDarkMode()"
-                  />
+                    :change="toggleDarkMode()"/>
                   <div class="slider round"></div>
                 </label>
               </div>
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -37,6 +36,7 @@ export default {
     };
   },
   methods: {
+    // navigateToHome() : This function has been implemented to allow the user to go to home after clicking 'devjobs' text in the header
     navigateToHome() {
     this.$router.push('/').catch(err => {
         if (
@@ -47,6 +47,7 @@ export default {
         }
       });
     },
+    // toggleDarkMode() : this function allows the user to toggle between dark and light mode
     toggleDarkMode() {
       if (this.enableDarkMode) {
         document.documentElement.setAttribute("data-theme", "dark");
