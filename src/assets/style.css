@@ -60,10 +60,12 @@ body{
 }
 
 .job-details-card {
+  border-radius: 5px;
   background-color: var(--card-color);
   color: var(--font-color);
 }
 .job-title-card {
+  border-radius: 5px;
   background-color: var(--card-color);
   color: var(--font-color);
 }
@@ -114,7 +116,8 @@ body{
 }
 
 input:checked + .slider {
-  background-color: #66bb6a;
+  background-color: #171d29;
+
 }
 
 input:checked + .slider:before {

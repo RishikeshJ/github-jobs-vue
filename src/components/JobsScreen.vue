@@ -1,10 +1,12 @@
 <template>
   <div>
+    <!-- v if implementation for the loading spinner - dependency on the isLoading variable -->
     <div class="d-flex justify-content-center" v-if="isLoading">
       <div class="spinner-border spinner-pos" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
+    <!-- form controls for entering description, location and type for job search -->
     <div class="container px-0 mb-4">
       <div class="row" style="max-height: 60px; margin-top: -30px">
         <form
@@ -18,8 +20,8 @@
                   style="height: 35px; width: 30px"/>
               </div>
               <div class="col-lg-11 px-lg-0 d-flex col-12">
-                <label for="jobquery" class="sr-only"
-                  >Filter by title, companies, expertise</label>
+                <label for="jobquery" class="sr-only">
+                  Filter by title, companies, expertise</label>
                 <input
                   v-model="description"
                   type="text"
@@ -41,9 +43,8 @@
             </div>
           </div>
           <div class="form-control mb-2 col-3 px-0 d-lg-block d-none">
-            <label for="locationFilter" class="sr-only"
-              >Filter by location</label
-            >
+            <label for="locationFilter" class="sr-only">
+              Filter by location</label>
             <input
               v-model="location"
               style="border: 0px"
@@ -56,34 +57,32 @@
           </div>
           <div
             class="form-group mb-2 job-type-filter d-lg-flex d-none px-3"
-            style="z-index: 1"
-          >
-            <label for="typeFilter" id="checkbox-fulltime" class="sr-only">Full Time Only</label>
+            style="z-index: 1">
+            <label for="typeFilter" id="checkbox-fulltime" class="sr-only">
+              Full Time Only</label>
             <input
               v-model="isFullTime"
               type="checkbox"
               id="typeFilter"
               class="mr-3"
-              :disabled="validateParams"
-            />
+              :disabled="validateParams"/>
             <label
               for="typeFilter"
               class="mr-3 label-text"
               style="font-weight: bold"
-              >Full Time Only</label
-            >
+              >Full Time Only</label>
             <button
               type="button"
               ref="search"
               id="search"
               @click="onSearch()"
               class="btn btn-primary"
-              :disabled="validatorError"
-            >
+              :disabled="validatorError">
               Search
             </button>
           </div>
         </form>
+        <!-- validation message with v if condition on validateError variable - checks if string has any numeric or special chars -->
         <div class="container" v-if="this.validatorError">
           <p class="ml-5" id="validation-msg" style="font-style: italic;"> * Only queries with alphabets are allowed </p>
         </div>
@@ -95,24 +94,19 @@
         :class="
           jobData.data && jobData.data.length < 3
             ? 'justify-content-start pl-3 ml-2'
-            : 'justify-content-around'
-        "
-      >
+            : 'justify-content-around'">
         <div
           class="col-md-3 my-4 mx-2 p-3 card"
           v-for="(value, index) in jobData.data"
           :key="index"
-          @click="onGetDetails(value.id)"
-        >
+          @click="onGetDetails(value.id)">
           <img
             class="img-card-top img-thumbnail"
             :src="
               value.company_logo
                 ? value.company_logo
-                : require('../assets/envelope.png')
-            "
-            alt=""
-          />
+                : require('../assets/envelope.png')"
+            alt=""/>
           <span class="pb-3" id="type-test">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
@@ -123,8 +117,7 @@
         <div
           v-if="jobData.data && jobData.data.length % 50 === 0"
           @click="onLoadMore()"
-          class="col-md-3 my-4 mx-2 p-3 card load-more-card"
-        >
+          class="col-md-3 my-4 mx-2 p-3 card load-more-card">
           <div style="padding: 26%">
             Load More
             <span
@@ -168,6 +161,7 @@ export default {
     };
   },
   computed: {
+    // validateParams() : this method allows us to restrict the user from entering numeric or special characters in the input controls
     validateParams() {
       var hasNumber = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g;
       if(hasNumber.test(this.description) || hasNumber.test(this.location)){
@@ -178,11 +172,10 @@ export default {
       }
       if (this.description.length > 0 || this.location.length > 0) {return false;}
       else {return true;}
-
-
     },
   },
   methods: {
+    // getJobs() : this method interacts with the backend functions to get the response with respect to the parameters
     getJobs() {
       this.loadMoreData ? "" : (this.isLoading = true);
       let baseUrl = "https://ntl-func.netlify.app/.netlify/functions/jobs";
@@ -217,6 +210,7 @@ export default {
           this.loadMoreData = false;
         });
     },
+    // getCurrentLocation() : this function accesses the geolocation and sets the data variables
     getCurrentLocation() {
       this.isLoading = true;
       if (navigator.geolocation) {
@@ -240,18 +234,22 @@ export default {
         this.getJobs();
       }
     },
+    // onGetDetails(id) : this method takes the id of a selected job card and passes it to job-details component
     onGetDetails(id) {
       this.$router.push({ path: "/job-details", query: { id: id } });
     },
+    // getRelativeTime(time) : allows us to measure the time elapsed since the created-date
     getRelativeTime(time) {
       dayjs.extend(relativeTime);
       return dayjs().to(dayjs(time));
     },
+    // onLoadMore() : this method allows us to leverage the paginated data provided by the github jobs api
     onLoadMore() {
       this.loadMoreData = true;
       this.page++;
       this.getJobs();
     },
+    // onSearch() : allows us to make a search request on the form submission click
     onSearch() {
       this.page = 0;
       this.getJobs();

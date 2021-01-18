@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- job title section -->
     <div class="row justify-content-center mb-5">
       <div class="col-md-10">
         <div class="row job-title-card p-3">
@@ -16,6 +17,7 @@
         </div>
       </div>
     </div>
+    <!-- Job details & requirements section -->
     <div class="row justify-content-center mt-5">
       <div class="col-md-10">
         <div class="row job-details-card">
@@ -28,7 +30,7 @@
         </div>
       </div>
     </div>
-
+    <!-- How to Apply Section -->
     <div class="row justify-content-center mt-5 mb-5">
         <div class="col-md-10">
             <div class="row how-to-apply-card mb-5">
@@ -53,6 +55,7 @@ export default {
     this.getJobDetails(this.$route.query.id);
   },
   methods: {
+    // getJobDetails(id) : this method gets specific job details with respect to its id, this method talks to the backend api
     getJobDetails(id) {
       let baseUrl = "https://ntl-func.netlify.app/.netlify/functions/jobs";
       axios
@@ -65,6 +68,7 @@ export default {
           this.jobDetails = response.data;
         });
     },
+    // getRelativeTime(time) : allows us to measure the time elapsed since the created-date
     getRelativeTime(time){
         dayjs.extend(relativeTime);
         return dayjs().to(dayjs(time));
@@ -90,7 +94,8 @@ export default {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 .how-to-apply-card {
-    background-image: linear-gradient(#5865E0,#1c2685);
+    border-radius: 5px;
+    background-image: linear-gradient(#5865E0,#8793f8);
     color: white;
 }
 .how-to-apply-url>>>a{
