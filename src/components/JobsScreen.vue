@@ -6,45 +6,46 @@
       </div>
     </div>
     <div class="container px-0 mb-4" v-if="!isLoading">
-      <div class="row" style="height: 60px; margin-top: -30px">
+      <div class="row" style="max-height: 60px; margin-top: -30px">
         <form
-          class="form-inline w-100 jobs-input-control justify-content-md-center"
+          class="form-inline w-100 jobs-input-control justify-content-lg-center"
         >
-          <div class="form-group mb-2 col-md-5 col-12 px-0 form-control w-100">
+          <div class="form-group mb-2 col-lg-5 col-12 px-0 form-control w-100">
             <div class="row w-100 mx-0">
-              <div class="col-3 px-0 pt-1 d-md-flex d-none">
+              <div class="col-3 px-0 pt-1 d-lg-flex d-none">
                 <img
                   src="../assets/magnifying-glass.svg"
                   class="d-md-flex d-none ml-3"
                   style="height: 35px; width: 30px"
                 />
               </div>
-              <div class="col-md-9 px-md-0 d-flex col-12">
+              <div class="col-lg-9 px-lg-0 d-flex col-12">
                 <label for="jobquery" class="sr-only"
                   >Filter by title, companies, expertise</label
                 >
                 <input
                   v-model="description"
                   type="text"
-                  class="w-100 px-md-5"
+                  class="w-100 px-lg-5"
                   style="border: 0"
                   id="jobquery"
                   placeholder="Filter by title, companies, expertise..."
                 />
                 <button
-                  class="btn btn-primary d-md-none float-right"
+                  class="btn-sm btn-outline-primary d-lg-none float-right"
                   type="button" ref='search' id="search"
                   @click="onSearch()"
                 >
-                  <img
+                Search
+                  <!-- <img
                     src="../assets/magnifying-glass.svg"
-                    style="height: 5px; width: 5px"
-                  />
+                    style="height: 10px; width: 10px; color: white;"
+                  /> -->
                 </button>
               </div>
             </div>
           </div>
-          <div class="form-control mb-2 col-3 px-0 d-md-block d-none">
+          <div class="form-control mb-2 col-3 px-0 d-lg-block d-none">
             <label for="locationFilter" class="sr-only"
               >Filter by location</label
             >
@@ -59,7 +60,7 @@
             <img src="../assets/map-pin.svg" class="icon-2" />
           </div>
           <div
-            class="form-group mb-2 job-type-filter d-md-flex d-none px-3"
+            class="form-group mb-2 job-type-filter d-lg-flex d-none px-3"
             style="z-index: 1; background-color: white"
           >
             <label for="typeFilter" class="sr-only">Full Time Only</label>
@@ -99,10 +100,10 @@
             :src="value.company_logo"
             alt=""
           />
-          <span>
+          <span class="pb-3">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
-          <p>{{ value.title }}</p>
+          <p style="font-weight:bold ">{{ value.title }}</p>
           <p class="pb-4">{{ value.company }}</p>
           <p class="location">{{ value.location }}</p>
         </div>
