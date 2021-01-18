@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -37,7 +38,14 @@ export default {
   },
   methods: {
     navigateToHome() {
-      this.$router.push('/');
+    this.$router.push('/').catch(err => {
+        if (
+          err.name !== 'NavigationDuplicated' &&
+          !err.message.includes('Avoided redundant navigation to current location')
+        ) {
+          console.log(err)
+        }
+      });
     },
     toggleDarkMode() {
       if (this.enableDarkMode) {
@@ -50,7 +58,7 @@ export default {
 };
 </script>
 
-<style >
+<style >  
 h2 {
   color: white;
 }

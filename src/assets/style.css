@@ -1,9 +1,12 @@
+
+
 :root {
     --primary-color: #536390;
     --secondary-color: #F5F6F8;
     --font-color: #000000;
     --card-color: #ffffff;
     --heading-color: #292922;
+    --transition: 0.4s;
   }
   
   [data-theme="dark"] {
@@ -12,6 +15,8 @@
     --font-color: #ffffff;
     --card-color: #19212D;
     --heading-color: #818cab;
+    --transition: 0.4s;
+
   }
 
 .header-style {
@@ -23,20 +28,27 @@
 }
 input{
     background-color: var(--card-color);
-    color: var(--secondary-color);
+}
+.no-padding{
+  padding-left: 10px !important;
 }
 .form-group, .form-control{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2) !important; 
+    transition: var(--transition);
     background-color: var(--card-color);
     color: var(--secondary-color);
     border: 1px solid var(--secondary-color) !important;
 }
 .label-text {
+    transition: var(--transition);
     color: var(--font-color);
 }
 body{
+    transition: var(--transition);
     background-color: var(--secondary-color);
 }
 .job-type-filter{
+    transition: var(--transition);
   border: 1px solid var(--secondary-color) !important;
 }
 .card {

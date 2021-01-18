@@ -1,46 +1,41 @@
 <template>
   <div>
     <div class="d-flex justify-content-center" v-if="isLoading">
-      <div class="spinner-border" role="status">
+      <div class="spinner-border spinner-pos" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div class="container px-0 mb-4" v-if="!isLoading">
+    <div class="container px-0 mb-4">
       <div class="row" style="max-height: 60px; margin-top: -30px">
         <form
-          class="form-inline w-100 jobs-input-control justify-content-lg-center"
-        >
+          class="form-inline w-100 jobs-input-control justify-content-lg-center">
           <div class="form-group mb-2 col-lg-5 col-12 px-0 form-control w-100">
             <div class="row w-100 mx-0">
-              <div class="col-3 px-0 pt-1 d-lg-flex d-none">
+              <div class="col-1 px-0 pt-1 d-lg-flex d-none">
                 <img
                   src="../assets/magnifying-glass.svg"
-                  class="d-md-flex d-none ml-3"
-                  style="height: 35px; width: 30px"
-                />
+                  class="d-md-flex d-none ml-2"
+                  style="height: 35px; width: 30px"/>
               </div>
-              <div class="col-lg-9 px-lg-0 d-flex col-12">
+              <div class="col-lg-11 px-lg-0 d-flex col-12">
                 <label for="jobquery" class="sr-only"
-                  >Filter by title, companies, expertise</label
-                >
+                  >Filter by title, companies, expertise</label>
                 <input
                   v-model="description"
                   type="text"
-                  class="w-100 px-lg-5"
+                  name="jobquery"
+                  class="w-100 px-lg-5 no-padding"
                   style="border: 0"
                   id="jobquery"
-                  placeholder="Filter by title, companies, expertise..."
-                />
+                  placeholder="Filter by title, companies, expertise..."/>
                 <button
                   class="btn-sm btn-outline-primary d-lg-none float-right"
-                  type="button" ref='search' id="search"
+                  type="button"
+                  ref="search"
+                  id="search"
                   @click="onSearch()"
-                >
-                Search
-                  <!-- <img
-                    src="../assets/magnifying-glass.svg"
-                    style="height: 10px; width: 10px; color: white;"
-                  /> -->
+                  :disabled="validatorError">
+                  Search
                 </button>
               </div>
             </div>
@@ -63,7 +58,7 @@
             class="form-group mb-2 job-type-filter d-lg-flex d-none px-3"
             style="z-index: 1"
           >
-            <label for="typeFilter" class="sr-only">Full Time Only</label>
+            <label for="typeFilter" id="checkbox-fulltime" class="sr-only">Full Time Only</label>
             <input
               v-model="isFullTime"
               type="checkbox"
@@ -71,17 +66,30 @@
               class="mr-3"
               :disabled="validateParams"
             />
-            <label for="typeFilter" class="mr-3 label-text" style="font-weight: bold"
+            <label
+              for="typeFilter"
+              class="mr-3 label-text"
+              style="font-weight: bold"
               >Full Time Only</label
             >
-            <button type="button" ref='search' id="search" @click="onSearch()" class="btn btn-primary">
+            <button
+              type="button"
+              ref="search"
+              id="search"
+              @click="onSearch()"
+              class="btn btn-primary"
+              :disabled="validatorError"
+            >
               Search
             </button>
           </div>
         </form>
+        <div class="container" v-if="this.validatorError">
+          <p class="ml-5" id="validation-msg" style="font-style: italic;"> * Only queries with alphabets are allowed </p>
+        </div>
       </div>
     </div>
-    <div class="container" v-if="!isLoading">
+    <div class="container pt-4" v-if="!isLoading">
       <div
         class="row"
         :class="
@@ -98,13 +106,17 @@
         >
           <img
             class="img-card-top img-thumbnail"
-            :src="value.company_logo"
+            :src="
+              value.company_logo
+                ? value.company_logo
+                : require('../assets/envelope.png')
+            "
             alt=""
           />
-          <span class="pb-3">
+          <span class="pb-3" id="type-test">
             {{ getRelativeTime(value.created_at) }} • {{ value.type }}
           </span>
-          <p style="font-weight:bold" class="card-title">{{ value.title }}</p>
+          <p style="font-weight: bold" class="card-title">{{ value.title }}</p>
           <p class="pb-4">{{ value.company }}</p>
           <p class="location">{{ value.location }}</p>
         </div>
@@ -137,9 +149,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 export default {
   name: "JobsScreen",
-  props: {},
+  props: [],
   created() {
-    this.getCurrentLocation()
+    this.getCurrentLocation();
   },
   data() {
     return {
@@ -152,19 +164,23 @@ export default {
       loadMoreData: false,
       lat: "",
       long: "",
+      validatorError:false,
     };
   },
   computed: {
     validateParams() {
-      console.log('description.length is: ', this.description.length)
-      console.log('location.length is: ', this.location.length)
+      var hasNumber = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g;
+      if(hasNumber.test(this.description) || hasNumber.test(this.location)){
+        console.log(this.validatorError);
+        this.validatorError = true;
+      } else {
+        this.validatorError = false;
+      }
+      if (this.description.length > 0 || this.location.length > 0) {return false;}
+      else {return true;}
 
-      if(this.description.length > 0 || this.location.length > 0)
-      return false
-      else
-      return true 
-      
-    }
+
+    },
   },
   methods: {
     getJobs() {
@@ -178,7 +194,7 @@ export default {
             isFullTime: this.isFullTime,
             page: this.page,
             lat: this.lat,
-            long: this.long
+            long: this.long,
           },
         })
         .then((response) => {
@@ -203,25 +219,26 @@ export default {
     },
     getCurrentLocation() {
       this.isLoading = true;
-        if (navigator.geolocation) {
-          let that = this
-          navigator.geolocation.getCurrentPosition(
-            function (position) {
-              var lat = position.coords.latitude;
-              var lng = position.coords.longitude;
-              that.lat = lat
-              that.long = lng
-              that.getJobs()
-            },
-            function (error) {
-              if(error) {
-              that.getJobs()
-              }
+      if (navigator.geolocation) {
+        let that = this;
+        that.getJobs();
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            that.lat = lat;
+            that.long = lng;
+            that.getJobs();
+          },
+          function (error) {
+            if (error) {
+              that.getJobs();
             }
-          );
-        } else {
-          this.getJobs()
-        }
+          }
+        );
+      } else {
+        this.getJobs();
+      }
     },
     onGetDetails(id) {
       this.$router.push({ path: "/job-details", query: { id: id } });
@@ -254,7 +271,7 @@ export default {
   color: white;
 }
 .location {
-  color: #5865E0;
+  color: #5865e0;
   position: absolute;
   bottom: 5px;
   margin-bottom: 0px;
@@ -283,7 +300,14 @@ export default {
   box-shadow: 0px 2px 10px -5px;
   border-radius: 0% !important;
 }
-
+.spinner-pos{
+   position: fixed;
+  left: 45vw;
+  top: 50vh;
+  z-index: 1000;
+  height: 80px;
+  width: 80px;
+}
 .icon {
   position: absolute;
   left: 0px;
@@ -298,6 +322,4 @@ export default {
   pointer-events: none;
   width: 20%;
 }
-
-
 </style>
