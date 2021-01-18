@@ -48,8 +48,8 @@ import axios from "axios";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime'
 export default {
+  name:"JobDetails",
   created() {
-    console.log("job details");
     this.getJobDetails(this.$route.query.id);
   },
   methods: {

@@ -16,7 +16,7 @@
                 <img
                   src="../assets/magnifying-glass.svg"
                   class="d-md-flex d-none ml-3"
-                  style="height: 35px;width: 30px;"
+                  style="height: 35px; width: 30px"
                 />
               </div>
               <div class="col-9 px-0">
@@ -27,11 +27,14 @@
                   v-model="description"
                   type="text"
                   class="w-100 px-md-5"
-                  style="border:0;"
+                  style="border: 0"
                   id="jobquery"
                   placeholder="Filter by title, companies, expertise..."
                 />
-                <button class="btn btn-primary d-md-none float-right" @click="onSearch()">
+                <button
+                  class="btn btn-primary d-md-none float-right"
+                  @click="onSearch()"
+                >
                   <img
                     src="../assets/magnifying-glass.svg"
                     style="height: 5px; width: 5px"
@@ -68,7 +71,7 @@
             <label for="typeFilter" class="mr-3" style="font-weight: bold"
               >Full Time Only</label
             >
-            <button type="button" @click="onSearch()" class="btn btn-primary">
+            <button type="button" ref='search' id="search" @click="onSearch()" class="btn btn-primary">
               Search
             </button>
           </div>
@@ -124,6 +127,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import axios from "axios";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -132,8 +136,7 @@ export default {
   name: "JobsScreen",
   props: {},
   created() {
-    this.getJobs();
-    this.getCurrentLocation();
+    this.getCurrentLocation()
   },
   data() {
     return {
@@ -144,6 +147,8 @@ export default {
       page: 0,
       isLoading: false,
       loadMoreData: false,
+      lat: "",
+      long: "",
     };
   },
   methods: {
@@ -157,6 +162,8 @@ export default {
             location: this.location,
             isFullTime: this.isFullTime,
             page: this.page,
+            lat: this.lat,
+            long: this.long
           },
         })
         .then((response) => {
@@ -180,25 +187,26 @@ export default {
         });
     },
     getCurrentLocation() {
-      var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-      };
-
-      function success(pos) {
-        var crd = pos.coords;
-        console.log(pos);
-        console.log("Your current position is:");
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude: ${crd.longitude}`);
-        console.log(`More or less ${crd.accuracy} meters.`);
-      }
-
-      function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-      }
-      navigator.geolocation.getCurrentPosition(success, error, options);
+      this.isLoading = true;
+        if (navigator.geolocation) {
+          let that = this
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              var lat = position.coords.latitude;
+              var lng = position.coords.longitude;
+              that.lat = lat
+              that.long = lng
+              that.getJobs()
+            },
+            function (error) {
+              if(error) {
+              that.getJobs()
+              }
+            }
+          );
+        } else {
+          this.getJobs()
+        }
     },
     onGetDetails(id) {
       this.$router.push({ path: "/job-details", query: { id: id } });
