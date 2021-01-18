@@ -8,41 +8,32 @@
     <div class="container px-0 mb-4" v-if="!isLoading">
       <div class="row" style="max-height: 60px; margin-top: -30px">
         <form
-          class="form-inline w-100 jobs-input-control justify-content-lg-center"
-        >
+          class="form-inline w-100 jobs-input-control justify-content-lg-center">
           <div class="form-group mb-2 col-lg-5 col-12 px-0 form-control w-100">
             <div class="row w-100 mx-0">
               <div class="col-1 px-0 pt-1 d-lg-flex d-none">
                 <img
                   src="../assets/magnifying-glass.svg"
                   class="d-md-flex d-none ml-2"
-                  style="height: 35px; width: 30px"
-                />
+                  style="height: 35px; width: 30px"/>
               </div>
               <div class="col-lg-11 px-lg-0 d-flex col-12">
                 <label for="jobquery" class="sr-only"
-                  >Filter by title, companies, expertise</label
-                >
+                  >Filter by title, companies, expertise</label>
                 <input
                   v-model="description"
                   type="text"
                   class="w-100 px-lg-5 no-padding"
                   style="border: 0"
                   id="jobquery"
-                  placeholder="Filter by title, companies, expertise..."
-                />
+                  placeholder="Filter by title, companies, expertise..."/>
                 <button
                   class="btn-sm btn-outline-primary d-lg-none float-right"
                   type="button"
                   ref="search"
                   id="search"
-                  @click="onSearch()"
-                >
+                  @click="onSearch()">
                   Search
-                  <!-- <img
-                    src="../assets/magnifying-glass.svg"
-                    style="height: 10px; width: 10px; color: white;"
-                  /> -->
                 </button>
               </div>
             </div>

@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -57,7 +58,7 @@ export default {
 };
 </script>
 
-<style >
+<style >  
 h2 {
   color: white;
 }
