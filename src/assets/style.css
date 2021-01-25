@@ -142,3 +142,10 @@ input:checked + .slider:before {
  width: 80px;
 }
 
+.jobs-input-control >>> *:not(.btn) {
+  height: 100%;
+}
+
+input{
+  color: var(--font-color);
+}

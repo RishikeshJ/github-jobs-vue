@@ -29,7 +29,7 @@
                   v-model="description"
                   type="text"
                   name="jobquery"
-                  class="w-100 px-lg-5 no-padding"
+                  class="w-100 px-lg-5 no-padding input-color"
                   style="border: 0"
                   id="jobquery"
                   placeholder="Filter by title, companies, expertise..."
